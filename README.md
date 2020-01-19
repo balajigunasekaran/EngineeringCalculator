@@ -1,6 +1,6 @@
 # Engineering Calculator
 
-![](https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png)
+![](https://github.com/balajigunasekaran/EngineeringCalculator/blob/master/Tools/ExcelToHtmlConverter/Icon.png)
 
 ### Excel to Webform Conversion Tool
   - Convert excel to html
