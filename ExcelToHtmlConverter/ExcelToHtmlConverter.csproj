@@ -4,13 +4,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="ExcelFile.png" />
     <None Remove="Folder.png" />
     <None Remove="Icon.png" />
+    <None Remove="Icons\ExcelFile.png" />
+    <None Remove="Icons\Folder.png" />
+    <None Remove="Icons\Icon.ico" />
+    <None Remove="Icons\Icon.png" />
+    <None Remove="Icons\Start.png" />
     <None Remove="Start.png" />
   </ItemGroup>
 
@@ -20,10 +25,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="ExcelFile.png" />
-    <Resource Include="Folder.png" />
-    <Resource Include="Icon.png" />
-    <Resource Include="Start.png" />
+    <Resource Include="Icons\ExcelFile.png" />
+    <Resource Include="Icons\Folder.png" />
+    <Resource Include="Icons\Icon.ico" />
+    <Resource Include="Icons\Icon.png" />
+    <Resource Include="Icons\Start.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
