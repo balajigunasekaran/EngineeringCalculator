@@ -1,14 +1,14 @@
-﻿using Excel = Microsoft.Office.Interop.Excel;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
-using System.IO;
-using System.Windows;
 using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelToHtmlConverter
 {
@@ -32,16 +32,19 @@ namespace ExcelToHtmlConverter
         {
             var openFileDialog = new OpenFileDialog
             {
-                Filter = "Excel file|*.xlsx",
+                Filter = "Excel Files|*.xlsx;*.xls",
                 Multiselect = false
             };
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.LastOpenedFile))
+                openFileDialog.InitialDirectory = new FileInfo(Properties.Settings.Default.LastOpenedFile).Directory.FullName;
             if (openFileDialog.ShowDialog() == true)
             {
+                Properties.Settings.Default.LastOpenedFile = openFileDialog.FileName;
                 txtFilePath.Text = openFileDialog.FileName;
                 btnGenerateHtml.IsEnabled = true;
+                LogInfo($"Selected excel file is {txtFilePath.Text}");
+                await LoadFormulaCells(txtFilePath.Text);
             }
-            LogInfo($"Selected excel file is {txtFilePath.Text}");
-            await LoadFormulaCells(txtFilePath.Text);
         }
 
         private async Task LoadFormulaCells(string sourceFilePath)
@@ -105,6 +108,8 @@ namespace ExcelToHtmlConverter
                 LogInfo($"Started Excel Process");
                 excel = new Excel.Application();
                 workbooks = excel.Workbooks;
+                //excel.DisplayAlerts = true;
+                //excel.AutomationSecurity = Microsoft.Office.Core.MsoAutomationSecurity.msoAutomationSecurityByUI;
             }
         }
 
@@ -118,6 +123,30 @@ namespace ExcelToHtmlConverter
                 Marshal.ReleaseComObject(excel);
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        private void CtrlCCopyCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ListBox lb = (ListBox)(sender);
+            var selected = lb.SelectedItem;
+            if (selected != null) Clipboard.SetText(selected.ToString());
+        }
+
+        private void CtrlCCopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void RightClickCopyCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
+            var selected = mi.DataContext;
+            if (selected != null) Clipboard.SetText(selected.ToString());
+        }
+
+        private void RightClickCopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
 
         private async void GenerateHtmlClick(object sender, RoutedEventArgs e)
@@ -217,6 +246,10 @@ namespace ExcelToHtmlConverter
             Properties.Settings.Default.Save();
         }
 
+        private void lstViewFormulas_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            
+        }
     }
 
     public class Cell
@@ -260,6 +293,11 @@ namespace ExcelToHtmlConverter
         {
             get;
             set;
+        }
+
+        public override string ToString()
+        {
+            return $"{Logged}\t{Type}\t{Text}";
         }
     }
 

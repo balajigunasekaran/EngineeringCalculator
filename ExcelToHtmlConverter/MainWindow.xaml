@@ -72,6 +72,9 @@
                     </StackPanel>
                 </TabItem.Header>
                 <ListView Margin="10" Name="lstViewLogs" ItemsSource="{Binding Logs}">
+                    <ListView.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Copy" CanExecute="CtrlCCopyCmdCanExecute" Executed="CtrlCCopyCmdExecuted" />
+                    </ListView.CommandBindings>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Logged" Width="130" DisplayMemberBinding="{Binding Logged}" />
@@ -82,7 +85,7 @@
                 </ListView>
             </TabItem>
             <TabItem Header="Formulas" x:Name="tabFormulas">
-                <ListView Margin="10" Name="lstViewFormulas" ItemsSource="{Binding FormulaCells}">
+                <ListView Margin="10" Name="lstViewFormulas" ItemsSource="{Binding FormulaCells}" MouseDoubleClick="lstViewFormulas_MouseDoubleClick">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Address" Width="185" DisplayMemberBinding="{Binding Address}" />
