@@ -1,6 +1,6 @@
 # Engineering Calculator
 
-![](https://github.com/balajigunasekaran/EngineeringCalculator/blob/master/Tools/ExcelToHtmlConverter/Icon.png)
+![](https://github.com/balajigunasekaran/EngineeringCalculator/blob/master/src/assets/img/favicons/logo.png)
 
 ### Excel to Webform Conversion Tool
   - Convert excel to html
